@@ -1,2 +1,2 @@
 # Bubble
-un aquarium de bulles multicolores
+Un aquarium de bulles multicolores
