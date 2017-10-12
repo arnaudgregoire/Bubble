@@ -1,8 +1,12 @@
 window.onload      = function(){
-
+	var timer      = 0;
 	var cv         = document.getElementById("bubble"),		//init the canvas
 		cst          = 1,
 		ctx        = cv.getContext("2d");
+	
+
+	cv.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	cv.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
 	var bubbles           = [],
 		now               = 0,
@@ -16,17 +20,23 @@ window.onload      = function(){
 	function init(){
 		// Fonction clic: création bulle
 		cv.addEventListener("click", new_bubble);
-		then              = Date.now()
+		then              = Date.now();
 		main();
 	}
 
 	function main(){
 		//Gestion des frames
-		now               = Date.now()
+		now               = Date.now();
 		var dt            = (now - then)/1000;
-
+		timer         = timer + dt;
+		
 		update(dt);
 		render();
+
+		if (timer>0.5){
+			spawn_bubble();	
+			timer = 0;
+		}
 
 		then = now;
 		requestAnimationFrame(main);
@@ -129,6 +139,20 @@ window.onload      = function(){
 			color           : Math.floor(Math.random()*361),			//bubble's color in hsl
 			lightness       :50
 		})
+	}
+
+	function spawn_bubble(){
+
+		bubbles.push({
+			x               : Math.random()* cv.width,
+			y               : Math.random()* cv.height,
+			radius          : 20,		//bubble's radius:
+			speed_x         : Math.floor(Math.random()*200) - 100,	//bubble's speed along x axis
+			speed_y         : Math.floor(Math.random()*200) - 100,	//bubble's speed along y axis
+			color           : Math.floor(Math.random()*361),			//bubble's color in hsl
+			lightness       :50
+		})
+			
 	}
 
 	function get_mouse_pos(e){
